@@ -1,0 +1,190 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ━━ BRUTALIST ZAXIS DESIGN SYSTEM ━━ */
+  --background: #0A0A0A;
+  --foreground: #F5F5F5;
+  --card: #111111;
+  --card-foreground: #F5F5F5;
+  --popover: #111111;
+  --popover-foreground: #F5F5F5;
+  --primary: #F5F5F5;
+  --primary-foreground: #0A0A0A;
+  --secondary: #1A1A1A;
+  --secondary-foreground: #F5F5F5;
+  --muted: #1A1A1A;
+  --muted-foreground: #888888;
+  --accent: #DA2517;
+  --accent-foreground: #F5F5F5;
+  --destructive: #DA2517;
+  --destructive-foreground: #F5F5F5;
+  --border: rgba(255,255,255,0.12);
+  --input: rgba(255,255,255,0.12);
+  --ring: #DA2517;
+  --chart-1: #DA2517;
+  --chart-2: #F5F5F5;
+  --chart-3: #888888;
+  --chart-4: #1A1A1A;
+  --chart-5: #0A0A0A;
+  --radius: 0px;
+  --sidebar: #0A0A0A;
+  --sidebar-foreground: #F5F5F5;
+  --sidebar-primary: #F5F5F5;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #DA2517;
+  --sidebar-accent-foreground: #F5F5F5;
+  --sidebar-border: rgba(255,255,255,0.08);
+  --sidebar-ring: #DA2517;
+
+  /* Custom Brutalist tokens */
+  --dark-bg: #0A0A0A;
+  --dark-card: #111111;
+  --dark-border: rgba(255,255,255,0.12);
+  --dark-muted: #888888;
+  --zaxis-red: #DA2517;
+  --zaxis-red-hover: #B81E12;
+  
+  /* Light sections */
+  --light-bg: #F5F5F5;
+  --light-card: #FFFFFF;
+  --light-border: rgba(0,0,0,0.15);
+  --light-text: #0A0A0A;
+  --light-muted: #666666;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans), 'Inter', system-ui, sans-serif;
+  --font-heading: 'Helvetica Neue', 'Helvetica', 'Arial Black', 'Arial', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Grain/Noise Texture Overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Brutalist Typography */
+.font-heading {
+  font-family: var(--font-heading);
+  font-stretch: expanded;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Fast, abrupt transitions */
+.transition-brutal {
+  transition: all 0.08s linear;
+}
+
+/* Hover state - immediate shift */
+.hover-brutal:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 0 #DA2517;
+}
+
+/* Sharp border style */
+.border-brutal {
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.border-brutal-dark {
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+/* Glitch effect for headings */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+
+.glitch-hover:hover {
+  animation: glitch 0.15s linear;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Apply heading font to all headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-stretch: expanded;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Selection styling */
+::selection {
+  background: #DA2517;
+  color: #F5F5F5;
+}
+
+/* Marquee ticker animation */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 28s linear infinite;
+  will-change: transform;
+}
