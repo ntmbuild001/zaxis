@@ -66,6 +66,9 @@ export function ContactForm() {
 
   const handleSubmit = async () => {
     setIsLoading(true)
+    console.log('[v0] Starting form submission...')
+    console.log('[v0] Form data:', formData)
+    
     try {
       const selectedServices = serviceOptions
         .filter(s => formData.services.includes(s.id))
@@ -75,19 +78,27 @@ export function ContactForm() {
       const selectedLocation = locations.find(l => l.id === formData.location)?.label || ''
       const selectedTimeline = timelineOptions.find(t => t.id === formData.timeline)?.label || ''
 
+      const requestBody = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        serviceArea: formData.location,
+        services: formData.services,
+        timeline: formData.timeline,
+        projectDetails: formData.message,
+      }
+      
+      console.log('[v0] Sending request to /api/contact:', requestBody)
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          serviceArea: formData.location,
-          services: formData.services,
-          timeline: formData.timeline,
-          projectDetails: formData.message,
-        }),
+        body: JSON.stringify(requestBody),
       })
+
+      console.log('[v0] Response status:', response.status)
+      const responseData = await response.json()
+      console.log('[v0] Response data:', responseData)
 
       if (response.ok) {
         toast({
@@ -97,13 +108,15 @@ export function ContactForm() {
         setFormData({ location: '', services: [], timeline: '', name: '', email: '', phone: '', message: '' })
         setStep(1)
       } else {
+        console.error('[v0] Form submission failed:', responseData)
         toast({ 
           title: 'Error', 
           description: 'Something went wrong. Please call us at 602-283-8116.', 
           variant: 'destructive' 
         })
       }
-    } catch {
+    } catch (error) {
+      console.error('[v0] Form submission error:', error)
       toast({ 
         title: 'Error', 
         description: 'Something went wrong. Please call us at 602-283-8116.', 

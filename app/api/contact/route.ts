@@ -46,8 +46,20 @@ function escapeHtml(text: string): string {
 }
 
 export async function POST(request: NextRequest) {
+  console.log('[v0] Contact form API called')
+  
+  // Check if RESEND_API_KEY is configured
+  if (!process.env.RESEND_API_KEY) {
+    console.error('[v0] RESEND_API_KEY is not configured')
+    return NextResponse.json(
+      { error: 'Email service not configured' },
+      { status: 500 }
+    )
+  }
+  
   try {
     const body: ContactFormData = await request.json()
+    console.log('[v0] Received form data:', JSON.stringify(body, null, 2))
 
     // Validate required fields
     if (!body.name || !body.email || !body.phone || !body.serviceArea || !body.services?.length || !body.timeline) {
@@ -108,6 +120,10 @@ export async function POST(request: NextRequest) {
     `
 
     // Send email via Resend
+    console.log('[v0] Attempting to send email via Resend...')
+    console.log('[v0] From: Zaxis Contracting <noreply@zaxiscontractingllc.com>')
+    console.log('[v0] To: zaxiscontracting@gmail.com')
+    
     const response = await resend.emails.send({
       from: 'Zaxis Contracting <noreply@zaxiscontractingllc.com>',
       to: 'zaxiscontracting@gmail.com',
@@ -116,10 +132,12 @@ export async function POST(request: NextRequest) {
       html: emailHtml,
     })
 
+    console.log('[v0] Resend response:', JSON.stringify(response, null, 2))
+
     if (response.error) {
-      console.error('Resend error:', response.error)
+      console.error('[v0] Resend error:', response.error)
       return NextResponse.json(
-        { error: 'Failed to send email' },
+        { error: 'Failed to send email', details: response.error },
         { status: 500 }
       )
     }
@@ -129,9 +147,9 @@ export async function POST(request: NextRequest) {
       message: 'Email sent successfully',
     })
   } catch (error) {
-    console.error('Contact form error:', error)
+    console.error('[v0] Contact form error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
