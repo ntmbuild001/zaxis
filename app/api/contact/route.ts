@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const response = await resend.emails.send({
-      from: 'Zaxis Contracting <zaxiscontracting@gmail.com>',
+      from: 'Zaxis Contracting <noreply@zaxiscontractingllc.com>',
       to: 'zaxiscontracting@gmail.com',
       replyTo: body.email,
       subject: `New Project Inquiry — ${servicesLabel} — ${areaLabel}`,
