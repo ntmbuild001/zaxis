@@ -15,7 +15,7 @@ const serviceOptions = [
   { id: 'custom-garages', label: 'Custom Garages' },
   { id: 'concrete', label: 'Concrete' },
   { id: 'patios', label: 'Patios' },
-  { id: 'dirt-work', label: 'Dirt Work / Underground' },
+  { id: 'dirt-work', label: 'Dirt Work / Trenches' },
   { id: 'other', label: 'Other' },
 ]
 

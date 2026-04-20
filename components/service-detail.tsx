@@ -29,10 +29,10 @@ export function ServiceDetail({ title, image, video, longDescription, includes, 
   }
 
   // For mobile, show shortened "DIRT WORK" instead of full title
-  const displayTitle = title.includes('Dirt Work / Underground') ? (
+  const displayTitle = title.includes('Dirt Work / Trenches') ? (
     <>
       <span className="md:hidden">DIRT WORK</span>
-      <span className="hidden md:inline">DIRT WORK / UNDERGROUND</span>
+      <span className="hidden md:inline">DIRT WORK / TRENCHES</span>
     </>
   ) : (
     title

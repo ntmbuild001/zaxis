@@ -145,7 +145,7 @@ export const services: Service[] = [
   {
     id: 'dirt-work',
     slug: 'dirt-work-underground',
-    title: 'Dirt Work / Underground',
+    title: 'Dirt Work / Trenches',
     description: 'Grading, excavation, and utility trenches',
     image: '/images/dirt-work-1.jpg',
     longDescription:
