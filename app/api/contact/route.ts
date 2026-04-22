@@ -21,7 +21,7 @@ const serviceLabels: { [key: string]: string } = {
   'custom-garages': 'Custom Garages',
   'concrete': 'Concrete',
   'patios': 'Patios',
-  'dirt-work': 'Dirt Work / Underground',
+  'dirt-work': 'Dirt Work / Trenches',
   'other': 'Other',
 }
 
