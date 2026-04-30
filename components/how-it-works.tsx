@@ -8,7 +8,7 @@ const steps = [
     number: '01',
     title: 'CONSULTATION',
     description:
-      'Reach out to Steve. We\'ll discuss your project, timeline, and vision — no pressure, just honest conversation.',
+      'each out to Steve. We\'ll discuss your project, timeline, and vision — no pressure, just honest conversation.',
   },
   {
     number: '02',
