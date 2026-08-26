@@ -32,6 +32,13 @@ const timelineLabels: { [key: string]: string } = {
   'planning': 'Just Planning',
 }
 
+// Sender and recipient are environment driven on purpose. The sending domain
+// must be verified in the Resend account that owns RESEND_API_KEY, so if that
+// account ever changes, this has to change with it. Making it an env var means
+// that is a dashboard edit rather than a code change and a redeploy.
+const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'Zaxis Contracting <noreply@zaxiscontractingllc.com>'
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'zaxiscontracting@gmail.com'
+
 function escapeHtml(text: string): string {
   const map: { [key: string]: string } = {
     '&': '&amp;',
@@ -46,6 +53,7 @@ function escapeHtml(text: string): string {
 export async function POST(request: NextRequest) {
   // Check if RESEND_API_KEY is configured
   if (!process.env.RESEND_API_KEY) {
+    console.error('[contact] RESEND_API_KEY is not set. Submission dropped before send.')
     return NextResponse.json(
       { error: 'Email service not configured. Please contact us via phone: 602-283-8116' },
       { status: 500 }
@@ -118,25 +126,42 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const response = await resend.emails.send({
-      from: 'Zaxis Contracting <noreply@zaxiscontractingllc.com>',
-      to: 'zaxiscontracting@gmail.com',
-      replyTo: body.email,
+      from: FROM_EMAIL,
+      to: TO_EMAIL,
+      // resend 3.x (pinned ^3.0.0) expects snake_case here. As `replyTo` this
+      // was silently dropped, so replying to an enquiry went to the noreply
+      // address instead of the customer.
+      reply_to: body.email,
       subject: `New Project Inquiry — ${servicesLabel} — ${areaLabel}`,
       html: emailHtml,
     })
 
     if (response.error) {
+      // Without this the failure is invisible: Vercel records no runtime error
+      // for a caught rejection, so a broken inbox looks identical to no traffic.
+      // The submitter's details are included so a lost enquiry can still be
+      // followed up by hand from the logs.
+      console.error('[contact] Resend rejected the send', {
+        resendError: response.error,
+        from: FROM_EMAIL,
+        to: TO_EMAIL,
+        submitter: { name: body.name, email: body.email, phone: body.phone },
+      })
       return NextResponse.json(
         { error: 'Failed to send email' },
         { status: 500 }
       )
     }
 
+    console.log('[contact] enquiry sent', { id: response.data?.id, to: TO_EMAIL })
+
     return NextResponse.json({
       success: true,
       message: 'Email sent successfully',
+      id: response.data?.id,
     })
   } catch (error) {
+    console.error('[contact] unexpected failure handling submission', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
